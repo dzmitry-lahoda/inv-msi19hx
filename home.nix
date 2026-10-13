@@ -60,9 +60,10 @@ in
 
       ssh = {
         enable = true;
-        matchBlocks."github.com" = {
-          user = "git";
-          extraOptions.PKCS11Provider = "/usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1";
+        enableDefaultConfig = false;
+        settings."github.com" = {
+          User = "git";
+          PKCS11Provider = "/usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1";
         };
       };
 
@@ -99,15 +100,15 @@ in
         enable = true;
         settings = {
           user = {
-            email = "${myname}@lahoda.pro";
-            name = "${myname}-lahoda";
-            signingkey = "B6DAD565C19E1C302B735664BF77F46FF7501BE1";
+            email = "dzmitry@lahoda.pro";
+            name = "dzmitry-lahoda";
+            signingkey = "key::ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOnLti9rmz4GNjdkjMVaFEuXjwD91egbFGr+kkN7XgxwuABpCSrMMN8Hlf40HV4RG6k6OkkXtNgoBEOFh8RYyJMNMe4u1zB4vV/C8q65yspmxW0oApypGobqjsgSxVH67vPl9mmsIZLetHZuSxTqaSbtZANtyVlpB4uX/qVpqysf92GuuWVTI2CcFhnLnk2ru12b5FegEkFQvhf2WsbOjeyP1FDznAk4wTXPlDPD6qhI5lgFq4b7GFWMXoRkCS2mA/0zoZVW+fQ1gEPiDf2sgFesfiAsBiuYykGg+6DW7gb9/WWKJ4k81RjSzd50FG8o+bjqfjOlwWyFhNQOfl6fHL";
           };
           commit.gpgsign = true;
           core.editor = "${pkgs.helix}/bin/hx";
           gpg = {
-            format = "openpgp";
-            program = "${config.programs.gpg.package}/bin/gpg";
+            format = "ssh";
+            ssh.program = "${pkgs.openssh}/bin/ssh-keygen";
           };
         };
       };
