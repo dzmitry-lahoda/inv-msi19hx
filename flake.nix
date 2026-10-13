@@ -16,15 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    helix = {
-      url = "github:helix-editor/helix/ba40e547426b0f9896c8bdc699a4ab11f2b37dbc";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    codex = { 
-      url = "github:openai/codex/rust-v0.162.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-    };
+    # helix = {
+    #   url = "github:helix-editor/helix/25.07.1";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs =
     inputs@{
@@ -58,6 +53,7 @@
               aider-chat-full = inputs.nixpkgs-unstable.legacyPackages.${system}.aider-chat-full;
               jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
               ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;            
+              codex = inputs.nixpkgs-unstable.legacyPackages.${system}.codex;
             })
           ];
           pkgs = import nixpkgs {
@@ -68,7 +64,7 @@
           _module.args.pkgs = import nixpkgs {
             inherit system;
           };
-          formatter = pkgs.nixfmt-rfc-style;
+          formatter = pkgs.nixfmt;
 
           packages = {
             activate = pkgs.writeShellApplication {
@@ -101,9 +97,9 @@
               aider-chat-full = inputs.nixpkgs-unstable.legacyPackages.${system}.aider-chat-full;
               jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
               ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;
-              claude-code = unstable-pkgs.claude-code;
-              codex = inputs.codex.packages.${system}.codex-rs;
-              gemini-cli = unstable-pkgs.gemini-cli;
+              # claude-code = unstable-pkgs.claude-code;
+              codex = unstable-pkgs.codex;
+              # gemini-cli = unstable-pkgs.gemini-cli;
             })
           ];
           pkgs = import nixpkgs {
@@ -124,7 +120,7 @@
                   "claude-code"
                 ];
               packageOverrides = pkgs: {
-                helix = helix.packages.${system}.helix;
+                # helix = helix.packages.${system}.helix;
                 vscode = nixpkgs.legacyPackages.${system}.vscode;
                 brave = nixpkgs.legacyPackages.${system}.brave;
                 nix = nixpkgs.legacyPackages.${system}.nix;

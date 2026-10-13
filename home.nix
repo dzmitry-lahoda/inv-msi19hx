@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -57,6 +58,19 @@ in
     {
       go.enable = true;
 
+      ssh = {
+        enable = true;
+        matchBlocks."github.com" = {
+          user = "git";
+          extraOptions.PKCS11Provider = "/usr/lib/x86_64-linux-gnu/libtpm2_pkcs11.so.1";
+        };
+      };
+
+      gpg = {
+        enable = true;
+        package = pkgs.gnupg.override { withTpm2Tss = true; };
+      };
+
       #bash = {
       #enable = true;
       #enableCompletion = true;
@@ -87,9 +101,13 @@ in
           user = {
             email = "${myname}@lahoda.pro";
             name = "${myname}-lahoda";
-            user.signingkey = "B6DAD565C19E1C302B735664BF77F46FF7501BE1";
-            commit.gpgsign = true;
-            core.editor = "${pkgs.helix}/bin/hx";
+            signingkey = "B6DAD565C19E1C302B735664BF77F46FF7501BE1";
+          };
+          commit.gpgsign = true;
+          core.editor = "${pkgs.helix}/bin/hx";
+          gpg = {
+            format = "openpgp";
+            program = "${config.programs.gpg.package}/bin/gpg";
           };
         };
       };
@@ -183,8 +201,7 @@ in
       trusted-public-keys = [
         "nixpkgs-update.cachix.org-1:6y6Z2JdoL3APdu6/+Iy8eZX2ajf09e4EE9SnxSML1W8="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="      
       ];
     };
   };
@@ -230,6 +247,9 @@ in
     gpg-agent = {
       enable = true;
       enableSshSupport = true;
+      extraConfig = ''
+        tpm2daemon-program ${config.programs.gpg.package}/libexec/tpm2daemon
+      '';
     };
     syncthing = {
       enable = true;
@@ -300,8 +320,8 @@ in
       ++ chats
       ++ ide
       ++ [
-        gemini-cli
-        claude-code
+        # agy
+        # claude-code
         codex
       ]
       ++ [
@@ -372,7 +392,7 @@ in
         fasttext
         opentofu
         kdePackages.dolphin
-        helix
+        # helix
         home-manager
         hwinfo
         nurl
