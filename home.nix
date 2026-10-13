@@ -57,6 +57,10 @@ in
     in
     {
       go.enable = true;
+      helix = {
+        enable = true;
+        defaultEditor = true;
+      };
 
       ssh = {
         enable = true;
@@ -393,7 +397,6 @@ in
         fasttext
         opentofu
         kdePackages.dolphin
-        # helix
         home-manager
         hwinfo
         nurl

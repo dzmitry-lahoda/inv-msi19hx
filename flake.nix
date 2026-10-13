@@ -16,10 +16,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    # helix = {
-    #   url = "github:helix-editor/helix/25.07.1";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    helix = {
+      url = "github:helix-editor/helix/25.07.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -65,7 +69,6 @@
             inherit system;
           };
           formatter = pkgs.nixfmt;
-
           packages = {
             activate = pkgs.writeShellApplication {
               name = "activate";
@@ -99,7 +102,6 @@
               ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;
               # claude-code = unstable-pkgs.claude-code;
               codex = unstable-pkgs.codex;
-              # gemini-cli = unstable-pkgs.gemini-cli;
             })
           ];
           pkgs = import nixpkgs {
@@ -120,7 +122,6 @@
                   "claude-code"
                 ];
               packageOverrides = pkgs: {
-                # helix = helix.packages.${system}.helix;
                 vscode = nixpkgs.legacyPackages.${system}.vscode;
                 brave = nixpkgs.legacyPackages.${system}.brave;
                 nix = nixpkgs.legacyPackages.${system}.nix;
@@ -137,7 +138,15 @@
             # add nixos-instable to this module
             # so that it can be used in the home-manager module
 
-            modules = [ ./home.nix ];
+            modules = [
+              ./home.nix
+              {
+                home.packages = with inputs.antigravity-nix.packages.${system}; [
+                  google-antigravity
+                  google-antigravity-cli
+                ];
+              }
+            ];
           };
         };
     };
