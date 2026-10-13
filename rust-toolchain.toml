@@ -1,0 +1,11 @@
+[toolchain]
+channel = "1.94.0"
+components = [
+  "clippy",
+  "llvm-tools",
+  "rust-analysis",
+  "rustfmt",
+  "rust-src",
+  "cargo",
+]
+targets = ["wasm32-unknown-unknown"]
