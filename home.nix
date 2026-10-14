@@ -288,9 +288,10 @@ in
     #};
   };
   home = {
-    # sessionVariables = {
-    #   NIXPKGS_ALLOW_UNFREE = 1;
-    # };
+    sessionVariables = {
+      SSH_ASKPASS = "${pkgs.openssh-askpass}/libexec/gtk-ssh-askpass";
+      SSH_ASKPASS_REQUIRE = "force";
+    };
     stateVersion = "24.05";
     username = "dz";
     homeDirectory = "/home/dz";
