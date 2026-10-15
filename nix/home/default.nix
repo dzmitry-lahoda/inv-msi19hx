@@ -48,6 +48,8 @@ in
 #};
 {
 
+  imports = [ ./ai.nix ];
+
   #xdg = {
   #  enable = true;
   #};
@@ -76,6 +78,16 @@ in
         package = pkgs.gnupg.override { withTpm2Tss = true; };
       };
 
+      bash = {
+        enable = true;
+        shellAliases = {
+          pten = "trans pt:en";
+          ll = "ls -la";
+        };
+        bashrcExtra = ''
+          . "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh"
+        '';
+      };
       #bash = {
       #enable = true;
       #enableCompletion = true;
@@ -161,7 +173,7 @@ in
       #   ];
       # };
     }
-    // (import ./workstation.nix);
+    // (import ./mail.nix);
   # note in home-manager
   # environment.etc = {
   #   "resolv.conf".text = "nameserver ns-207.awsdns-25.com\n";
@@ -313,8 +325,8 @@ in
             opencv-python-headless
           ];
         python = pkgs.python3.withPackages python-packages;
-        ide = import ./nix/packages/ide.nix { inherit pkgs; };
-        chats = import ./nix/packages/chat.nix { inherit pkgs; };
+        ide = import ../packages/ide.nix { inherit pkgs; };
+        chats = import ../packages/chat.nix { inherit pkgs; };
       in
       with pkgs;
       netboot

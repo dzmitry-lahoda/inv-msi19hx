@@ -16,9 +16,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    antigravity-nix.url = "github:jacopone/antigravity-nix";
+    agy-conductor = {
+      url = "github:gemini-cli-extensions/conductor";
+      flake = false;
+    };
+    agy-postgres = {
+      url = "github:gemini-cli-extensions/postgres";
+      flake = false;
+    };
+    codex-agy-plugin = {
+      url = "github:sysCat64/codex-agy-plugin";
+      flake = false;
     };
     helix = {
       url = "github:helix-editor/helix/25.07.1";
@@ -135,18 +144,10 @@
         {
           homeConfigurations.dz = inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            # add nixos-instable to this module
-            # so that it can be used in the home-manager module
-
-            modules = [
-              ./home.nix
-              {
-                home.packages = with inputs.antigravity-nix.packages.${system}; [
-                  google-antigravity
-                  google-antigravity-cli
-                ];
-              }
-            ];
+            extraSpecialArgs = {
+              inherit (inputs) antigravity-nix agy-conductor agy-postgres;
+            };
+            modules = [ ./nix/home ];
           };
         };
     };
