@@ -327,6 +327,21 @@ in
         python = pkgs.python3.withPackages python-packages;
         ide = import ../packages/ide.nix { inherit pkgs; };
         chats = import ../packages/chat.nix { inherit pkgs; };
+        docs = with pkgs; [
+          pandoc
+          mermaid-cli
+          graphviz
+          typst
+          typstyle
+          poppler-utils
+          qpdf
+          tectonic
+        ];
+        images = with pkgs; [
+          graphicsmagick
+          photoqt
+          digikam
+        ];
       in
       with pkgs;
       netboot
@@ -337,6 +352,8 @@ in
       ]
       ++ chats
       ++ ide
+      ++ docs
+      ++ images
       ++ [
         # agy
         # claude-code
@@ -347,23 +364,12 @@ in
         bun
       ]
       ++ [
-        poppler-utils
-        qpdf
-        tectonic
-      ]
-      ++ [
         pgcli
-      ]
-      ++ [
-        graphicsmagick
-        photoqt
-        digikam
       ]
       ++ [
         lean4 # contains elan
         poetry
         maturin
-        typst
         python
         zed-editor
         uv
@@ -413,10 +419,8 @@ in
         home-manager
         hwinfo
         nurl
-        poppler-utils
         hyperfine
         jq
-        pandoc
         aider-chat-full
         jujutsu
         kubo
