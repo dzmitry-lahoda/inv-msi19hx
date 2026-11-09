@@ -331,7 +331,10 @@ in
           pandoc
           mermaid-cli
           graphviz
-          typst
+          (typst.withPackages (ps: [
+            ps.diagraph_0_3_7
+            ps.merman_0_3_0
+          ]))
           typstyle
           poppler-utils
           qpdf
@@ -421,7 +424,6 @@ in
         nurl
         hyperfine
         jq
-        aider-chat-full
         jujutsu
         kubo
         languagetool
@@ -442,6 +444,7 @@ in
         radianWrapper
         rclone
         rclone-browser
+        remmina
         ripgrep
         rocksdb
         rust-script
@@ -452,6 +455,7 @@ in
         shadow
         sqlfluff
         starship
+        tigervnc
         translate-shell
         watchexec
         websocat

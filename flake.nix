@@ -16,7 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    antigravity-nix.url = "github:jacopone/antigravity-nix";
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agy-conductor = {
       url = "github:gemini-cli-extensions/conductor";
       flake = false;
@@ -63,7 +66,6 @@
             nixgl.overlay
             (final: prev: {
               rust-toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-              aider-chat-full = inputs.nixpkgs-unstable.legacyPackages.${system}.aider-chat-full;
               jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
               ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;            
               codex = inputs.nixpkgs-unstable.legacyPackages.${system}.codex;
@@ -106,11 +108,11 @@
             nixgl.overlay
             (final: prev: {
               rust-toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-              aider-chat-full = inputs.nixpkgs-unstable.legacyPackages.${system}.aider-chat-full;
               jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
               ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;
               # claude-code = unstable-pkgs.claude-code;
               codex = unstable-pkgs.codex;
+              typst = unstable-pkgs.typst;
             })
           ];
           pkgs = import nixpkgs {
