@@ -3,6 +3,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    codex-nix = {
+      url = "github:SecBear/codex-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -61,14 +65,15 @@
         }:
 
         let
+          unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
           overlays = [
             (import rust-overlay)
-            nixgl.overlay
+            inputs.codex-nix.overlays.default
             (final: prev: {
+              nixgl = nixgl.packages.${system};
               rust-toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-              jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
-              ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;            
-              codex = inputs.nixpkgs-unstable.legacyPackages.${system}.codex;
+              jujutsu = unstable.jujutsu;
+              ledger-live-desktop = unstable.ledger-live-desktop;
             })
           ];
           pkgs = import nixpkgs {
@@ -105,13 +110,12 @@
           system = "x86_64-linux";
           overlays = [
             (import rust-overlay)
-            nixgl.overlay
+            inputs.codex-nix.overlays.default
             (final: prev: {
+              nixgl = nixgl.packages.${system};
               rust-toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
               jujutsu = inputs.nixpkgs-unstable.legacyPackages.${system}.jujutsu;
-              ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;
-              # claude-code = unstable-pkgs.claude-code;
-              codex = unstable-pkgs.codex;
+              ledger-live-desktop = inputs.nixpkgs-unstable.legacyPackages.${system}.ledger-live-desktop;              
               typst = unstable-pkgs.typst;
             })
           ];

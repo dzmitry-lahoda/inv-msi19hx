@@ -8,8 +8,8 @@
 {
   home.packages = with antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
     google-antigravity
-    google-antigravity-cli # agy
-  ];
+    google-antigravity-cli # agy    
+  ] ++ [pkgs.codex];
 
   home.file = {
     ".gemini/config/plugins/conductor".source = agy-conductor;

@@ -358,11 +358,6 @@ in
       ++ docs
       ++ images
       ++ [
-        # agy
-        # claude-code
-        codex
-      ]
-      ++ [
         nodejs
         bun
       ]
@@ -433,7 +428,7 @@ in
         nix
         nix-tree
         nixd
-        nixfmt-rfc-style
+        nixfmt
         nixgl.nixGLIntel
         openssl
         openssl.dev
